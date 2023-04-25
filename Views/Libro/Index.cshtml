@@ -1,0 +1,55 @@
+@using ParcialLibros.ViewModels;
+
+@* @model IEnumerable<ParcialLibros.Models.Libro> *@
+
+@model LibrosViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="row">
+    <form method="get" asp-action="Index" asp-controller="Libro">
+        <div>
+            <input class="form-control" asp-for="NameFilter">
+        </div>
+        <button class="btn" type="sumbit">Buscar</button>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Libros.FirstOrDefault().Nombre))
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Libros.FirstOrDefault().Editorial))
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Libros)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Editorial)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
