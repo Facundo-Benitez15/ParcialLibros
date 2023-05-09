@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ParcialLibros.Data;
 using ParcialLibros.Models;
+using ParcialLibros.ViewModels;
 
 namespace ParcialLibros.Controllers
 {
@@ -20,10 +21,26 @@ namespace ParcialLibros.Controllers
         }
 
         // GET: Libro
-        public async Task<IActionResult> Index()
+        // public async Task<IActionResult> Index(string name)
+        // {
+        //     var libroContext = _context.Libro.Include(l => l.Autor);
+        //     return View(await libroContext.ToListAsync());
+
+        // }
+        public async Task<IActionResult> Index(string NameFilter)
         {
-            var libroContext = _context.Libro.Include(l => l.Autor);
-            return View(await libroContext.ToListAsync());
+            var query = from libro in _context.Libro select libro;
+
+            if (!string.IsNullOrEmpty(NameFilter))
+            {
+                query = query.Where(x => x.Nombre.Contains(NameFilter));
+            }
+            var model = new LibrosViewModel();
+            model.Libros = await query.ToListAsync();
+
+            return _context.Libro != null ?
+            View(model) :
+            Problem("El contexto es null");
         }
 
         // GET: Libro/Details/5
@@ -155,14 +172,14 @@ namespace ParcialLibros.Controllers
             {
                 _context.Libro.Remove(libro);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LibroExists(int id)
         {
-          return (_context.Libro?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Libro?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
