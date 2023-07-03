@@ -1,42 +1,44 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ParcialLibros.Data;
 using ParcialLibros.Models;
+using ParcialLibros.Services;
 
 namespace ParcialLibros.Controllers
 {
     public class AutorController : Controller
     {
         private readonly LibroContext _context;
-
-        public AutorController(LibroContext context)
+        private readonly IAutorService _autorService;
+        public AutorController(LibroContext context, IAutorService autorService)
         {
             _context = context;
+            _autorService = autorService;
         }
 
         // GET: Autor
         public async Task<IActionResult> Index()
         {
-              return _context.Autor != null ? 
-                          View(await _context.Autor.ToListAsync()) :
-                          Problem("Entity set 'LibroContext.Autor'  is null.");
+            // return _context.Autor != null ?
+            //             View(await _context.Autor.ToListAsync()) :
+            //             Problem("Entity set 'LibroContext.Autor'  is null.");
+
+            var autores = _autorService.GetAll();
+            return View(autores);
         }
 
         // GET: Autor/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Autor == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var autor = await _context.Autor
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var autor = _autorService.GetById(id.Value);
+
             if (autor == null)
             {
                 return NotFound();
@@ -75,7 +77,7 @@ namespace ParcialLibros.Controllers
                 return NotFound();
             }
 
-            var autor = await _context.Autor.FindAsync(id);
+            var autor = _autorService.GetById(id.Value);
             if (autor == null)
             {
                 return NotFound();
@@ -99,8 +101,7 @@ namespace ParcialLibros.Controllers
             {
                 try
                 {
-                    _context.Update(autor);
-                    await _context.SaveChangesAsync();
+                    _autorService.Update(autor);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -126,8 +127,7 @@ namespace ParcialLibros.Controllers
                 return NotFound();
             }
 
-            var autor = await _context.Autor
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var autor = _autorService.GetById(id.Value);
             if (autor == null)
             {
                 return NotFound();
@@ -141,23 +141,13 @@ namespace ParcialLibros.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Autor == null)
-            {
-                return Problem("Entity set 'LibroContext.Autor'  is null.");
-            }
-            var autor = await _context.Autor.FindAsync(id);
-            if (autor != null)
-            {
-                _context.Autor.Remove(autor);
-            }
-            
-            await _context.SaveChangesAsync();
+            _autorService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool AutorExists(int id)
         {
-          return (_context.Autor?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _autorService.GetById(id) != null;
         }
     }
 }

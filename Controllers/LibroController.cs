@@ -8,57 +8,58 @@ using Microsoft.EntityFrameworkCore;
 using ParcialLibros.Data;
 using ParcialLibros.Models;
 using ParcialLibros.ViewModels;
+using ParcialLibros.Services;
 
 namespace ParcialLibros.Controllers
 {
     public class LibroController : Controller
     {
+        private readonly ILibroService _libroService;
+
         private readonly LibroContext _context;
 
-        public LibroController(LibroContext context)
+        public LibroController(ILibroService libroService)
         {
-            _context = context;
+            _libroService = libroService;
         }
 
         // GET: Libro
-        // public async Task<IActionResult> Index(string name)
-        // {
-        //     var libroContext = _context.Libro.Include(l => l.Autor);
-        //     return View(await libroContext.ToListAsync());
-
-        // }
-        public async Task<IActionResult> Index(string NameFilter)
+        public async Task<IActionResult> Index(string name)
         {
-            var query = from libro in _context.Libro select libro;
-
-            if (!string.IsNullOrEmpty(NameFilter))
-            {
-                query = query.Where(x => x.Nombre.Contains(NameFilter));
-            }
             var model = new LibrosViewModel();
-            model.Libros = await query.ToListAsync();
-
-            return _context.Libro != null ?
-            View(model) :
-            Problem("El contexto es null");
+            model.Libros = _libroService.GetAll(name);
+            return View(model);
         }
+
+        // public async Task<IActionResult> Index(string NameFilter)
+        // {
+        //     var query = from libro in _context.Libro select libro;
+
+        //     if (!string.IsNullOrEmpty(NameFilter))
+        //     {
+        //         query = query.Where(x => x.Nombre.Contains(NameFilter));
+        //     }
+        //     var model = new LibrosViewModel();
+        //     model.Libros = await query.ToListAsync();
+
+        //     return _context.Libro != null ?
+        //     View(model) :
+        //     Problem("El contexto es null");
+        // }
 
         // GET: Libro/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Libro == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var libro = await _context.Libro
-                .Include(l => l.Autor)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var libro = _libroService.GetById(id.Value);
             if (libro == null)
             {
                 return NotFound();
             }
-
             return View(libro);
         }
 
@@ -78,23 +79,22 @@ namespace ParcialLibros.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(libro);
-                await _context.SaveChangesAsync();
+                _libroService.Create(libro);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AutorId"] = new SelectList(_context.Autor, "Id", "Id", libro.AutorId);
+
             return View(libro);
         }
 
         // GET: Libro/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Libro == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var libro = await _context.Libro.FindAsync(id);
+            var libro = _libroService.GetById(id.Value);
             if (libro == null)
             {
                 return NotFound();
@@ -119,8 +119,7 @@ namespace ParcialLibros.Controllers
             {
                 try
                 {
-                    _context.Update(libro);
-                    await _context.SaveChangesAsync();
+                    _libroService.Update(libro);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -135,21 +134,19 @@ namespace ParcialLibros.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AutorId"] = new SelectList(_context.Autor, "Id", "Id", libro.AutorId);
+            // ViewData["AutorId"] = new SelectList(_context.Autor, "Id", "Id", libro.AutorId);
             return View(libro);
         }
 
         // GET: Libro/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Libro == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var libro = await _context.Libro
-                .Include(l => l.Autor)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var libro = _libroService.GetById(id.Value);
             if (libro == null)
             {
                 return NotFound();
@@ -163,23 +160,13 @@ namespace ParcialLibros.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Libro == null)
-            {
-                return Problem("Entity set 'LibroContext.Libro'  is null.");
-            }
-            var libro = await _context.Libro.FindAsync(id);
-            if (libro != null)
-            {
-                _context.Libro.Remove(libro);
-            }
-
-            await _context.SaveChangesAsync();
+            _libroService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool LibroExists(int id)
         {
-            return (_context.Libro?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _libroService.GetById(id) != null;
         }
     }
 }
