@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using ParcialLibros.Services;
 
 namespace ParcialLibros.Controllers
 {
+    [Authorize]
     public class AutorController : Controller
     {
         private readonly LibroContext _context;
@@ -19,6 +21,7 @@ namespace ParcialLibros.Controllers
         }
 
         // GET: Autor
+
         public async Task<IActionResult> Index()
         {
             // return _context.Autor != null ?

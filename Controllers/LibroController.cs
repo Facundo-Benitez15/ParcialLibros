@@ -9,9 +9,11 @@ using ParcialLibros.Data;
 using ParcialLibros.Models;
 using ParcialLibros.ViewModels;
 using ParcialLibros.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ParcialLibros.Controllers
 {
+    [Authorize]
     public class LibroController : Controller
     {
         private readonly ILibroService _libroService;

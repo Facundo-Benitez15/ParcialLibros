@@ -1,22 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
-using ParcialLibros.Models;
+
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ParcialLibros.Data
 {
-    public class LibroContext : DbContext
+    public class LibroContext : IdentityDbContext
     {
         public LibroContext(DbContextOptions<LibroContext> options)
             : base(options)
         {
         }
+        public DbSet<ParcialLibros.Models.Autor> Autor { get; set; } = default!;
 
         public DbSet<ParcialLibros.Models.Libro> Libro { get; set; } = default!;
 
-        public DbSet<ParcialLibros.Models.Autor> Autor { get; set; } = default!;
+        // public DbSet<ParcialLibros.Models.Autor> Autor { get; set; } = default!;
 
 
     }
