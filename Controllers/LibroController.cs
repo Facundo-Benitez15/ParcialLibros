@@ -20,9 +20,10 @@ namespace ParcialLibros.Controllers
 
         private readonly LibroContext _context;
 
-        public LibroController(ILibroService libroService)
+        public LibroController(ILibroService libroService,LibroContext context)
         {
             _libroService = libroService;
+            _context=context;
         }
 
         // GET: Libro
@@ -65,9 +66,10 @@ namespace ParcialLibros.Controllers
             return View(libro);
         }
 
-        // GET: Libro/Create
+        //GET: Libro/Create
         public IActionResult Create()
         {
+            //Utilizar algo parecido para el mostrar en el listado,pero con nombres en lugar de id
             ViewData["AutorId"] = new SelectList(_context.Autor, "Id", "Id");
             return View();
         }
