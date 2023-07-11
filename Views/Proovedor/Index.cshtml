@@ -1,4 +1,6 @@
-@model IEnumerable<ParcialLibros.Models.Proovedor>
+@* @model IEnumerable<ParcialLibros.Models.Proovedor> *@
+@using ParcialLibros.ViewModels;
+@model ProovedoresViewModel;
 
 @{
     ViewData["Title"] = "Index";
@@ -9,17 +11,26 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<div class="row">
+    <form method="get" asp-action="Index" asp-controller="Proovedor">
+        <div class="col-6 form-group m-2">
+            <input placeholder="Nombre del Proovedor" class="form-control" asp-for="NameFilter">
+        </div>
+        <button class="btn btn-info" type="sumbit">Buscar</button>
+    </form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nombre)
+                @Html.DisplayNameFor(model => model.Proovedores[0].Nombre)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Proovedores) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nombre)

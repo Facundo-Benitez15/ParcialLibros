@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using ParcialLibros.Data;
 using ParcialLibros.Models;
 using ParcialLibros.Services;
+using ParcialLibros.ViewModels;
 
 namespace ParcialLibros.Controllers
 {
@@ -22,14 +23,11 @@ namespace ParcialLibros.Controllers
 
         // GET: Autor
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string NameFilter)
         {
-            // return _context.Autor != null ?
-            //             View(await _context.Autor.ToListAsync()) :
-            //             Problem("Entity set 'LibroContext.Autor'  is null.");
-
-            var autores = _autorService.GetAll();
-            return View(autores);
+            var model = new AutorViewModel();
+            model.Autors=_autorService.GetAll(NameFilter);
+            return View(model);
         }
 
         // GET: Autor/Details/5

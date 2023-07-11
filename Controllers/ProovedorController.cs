@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ParcialLibros.Data;
 using ParcialLibros.Models;
 using ParcialLibros.Services;
+using ParcialLibros.ViewModels;
 
 namespace ParcialLibros.Controllers
 {
@@ -24,14 +25,12 @@ namespace ParcialLibros.Controllers
         }
 
         // GET: Proovedor
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string NameFilter)
         {
-            //   return _context.Proovedor != null ? 
-            //               View(await _context.Proovedor.ToListAsync()) :
-            //               Problem("Entity set 'LibroContext.Proovedor'  is null.");
 
-            var proovedores = _proovedorService.GetAll();
-            return View(proovedores);
+            var model = new ProovedoresViewModel();
+            model.Proovedores=_proovedorService.GetAll(NameFilter);
+            return View(model);
         }
 
         // GET: Proovedor/Details/5

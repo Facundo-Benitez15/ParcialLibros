@@ -1,4 +1,6 @@
-@model IEnumerable<ParcialLibros.Models.Autor>
+@* @model IEnumerable<ParcialLibros.Models.Autor> *@
+@using ParcialLibros.ViewModels;
+@model AutorViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -9,23 +11,31 @@
 <p>
     <a asp-action="Create">Crear nuevo autor</a>
 </p>
+<div class="row">
+    <form method="get" asp-action="Index" asp-controller="Autor">
+        <div class="col-6 form-group m-2">
+            <input placeholder="Nombre del Autor" class="form-control" asp-for="NameFilter">
+        </div>
+        <button class="btn btn-info" type="sumbit">Buscar</button>
+    </form>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.Autors[0].Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nombre)
+                @Html.DisplayNameFor(model => model.Autors[0].Nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Apellido)
+                @Html.DisplayNameFor(model => model.Autors[0].Apellido)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Autors)
         {
             <tr>
                 <td>

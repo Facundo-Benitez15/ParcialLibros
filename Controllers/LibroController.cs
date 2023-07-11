@@ -27,28 +27,13 @@ namespace ParcialLibros.Controllers
         }
 
         // GET: Libro
-        public async Task<IActionResult> Index(string name)
+        public async Task<IActionResult> Index(string NameFilter)
         {
             var model = new LibrosViewModel();
-            model.Libros = _libroService.GetAll(name);
+            model.Libros = _libroService.GetAll(NameFilter);
             return View(model);
         }
 
-        // public async Task<IActionResult> Index(string NameFilter)
-        // {
-        //     var query = from libro in _context.Libro select libro;
-
-        //     if (!string.IsNullOrEmpty(NameFilter))
-        //     {
-        //         query = query.Where(x => x.Nombre.Contains(NameFilter));
-        //     }
-        //     var model = new LibrosViewModel();
-        //     model.Libros = await query.ToListAsync();
-
-        //     return _context.Libro != null ?
-        //     View(model) :
-        //     Problem("El contexto es null");
-        // }
 
         // GET: Libro/Details/5
         public async Task<IActionResult> Details(int? id)
