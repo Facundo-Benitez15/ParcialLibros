@@ -15,11 +15,12 @@
     <a asp-action="Create">Crear Libro</a>
 </p>
 <div class="row">
-    <form method="get" asp-action="Index" asp-controller="Autor">
+    <form method="get" asp-action="Index" asp-controller="Libro">
         <div class="col-6 form-group m-2">
-            <input placeholder="Nombre del Comic" class="form-control" asp-for="NameFilter">
+            <input placeholder="Nombre o Editorial" class="form-control" asp-for="NameFilter">
         </div>
         <button class="btn btn-info" type="sumbit">Buscar</button>
+        
     </form>
 </div>
 <table class="table m-3">

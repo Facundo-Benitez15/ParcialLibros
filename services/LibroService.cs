@@ -39,7 +39,7 @@ public class LibroService : ILibroService
 
         if (!string.IsNullOrEmpty(filter))
         {
-            query = query.Where(x => x.Nombre.Contains(filter));
+            query = query.Where(x => x.Nombre.Contains(filter) || x.Editorial.Contains(filter));
         }
 
         return query.ToList();

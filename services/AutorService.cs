@@ -35,7 +35,12 @@ public class AutorService : IAutorService
 
         if (!string.IsNullOrEmpty(filter))
         {
-            query = query.Where(x => x.Nombre.Contains(filter));
+            
+            //query = query.Where(x => x.Nombre.Contains(filter));
+
+            query = query.Where(x => x.Nombre.Contains(filter) || x.Apellido.Contains(filter));
+        
+            
         }
 
         return query.ToList();
