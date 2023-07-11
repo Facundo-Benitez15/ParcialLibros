@@ -71,6 +71,7 @@ namespace ParcialLibros.Controllers
         {
             //Utilizar algo parecido para el mostrar en el listado,pero con nombres en lugar de id
             ViewData["AutorId"] = new SelectList(_context.Autor, "Id", "Id");
+            ViewData["Proovedores"] = new SelectList(_context.Proovedor, "Id", "Nombre");
             return View();
         }
 
@@ -79,7 +80,7 @@ namespace ParcialLibros.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AutorId,Nombre,Editorial")] Libro libro)
+        public async Task<IActionResult> Create([Bind("Id,Proovedores,AutorId,Nombre,Editorial")] Libro libro)
         {
             if (ModelState.IsValid)
             {
@@ -138,7 +139,7 @@ namespace ParcialLibros.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            // ViewData["AutorId"] = new SelectList(_context.Autor, "Id", "Id", libro.AutorId);
+            ViewData["AutorId"] = new SelectList(_context.Autor, "Id", "Id", libro.AutorId);
             return View(libro);
         }
 

@@ -8,5 +8,6 @@ public class Libro
     public string Nombre { get; set; }
     public string Editorial { get; set; }
     public virtual Autor? Autor { get; set; }
+    public List<Proovedor> Proovedores { get; set; }
 
 }

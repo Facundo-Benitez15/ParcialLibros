@@ -2,17 +2,17 @@ using ParcialLibros.Models;
 using ParcialLibros.Data;
 
 namespace ParcialLibros.Services;
-public class AutorService : IAutorService
+public class ProovedorService : IProovedorService
 {
     private readonly LibroContext _context;
 
 
-    public AutorService(LibroContext context)
+    public ProovedorService(LibroContext context)
     {
         _context = context;
     }
 
-    public void Create(Autor obj)
+    public void Create(Proovedor obj)
     {
         _context.Add(obj);
         _context.SaveChanges();
@@ -29,7 +29,7 @@ public class AutorService : IAutorService
         }
     }
 
-    public List<Autor> GetAll(string filter)
+    public List<Proovedor> GetAll(string filter)
     {
         var query = GetQuery();
 
@@ -41,27 +41,27 @@ public class AutorService : IAutorService
         return query.ToList();
     }
 
-    public List<Autor> GetAll()
+    public List<Proovedor> GetAll()
     {
         var query = GetQuery();
         return query.ToList();
     }
 
-    public Autor? GetById(int id)
+    public Proovedor? GetById(int id)
     {
-        var autor = GetQuery().FirstOrDefault(x => x.Id == id);
+        var Proovedor = GetQuery().FirstOrDefault(x => x.Id == id);
 
-        return autor;
+        return Proovedor;
     }
 
-    public void Update(Autor obj)
+    public void Update(Proovedor obj)
     {
         _context.Update(obj);
         _context.SaveChanges();
     }
 
-    private IQueryable<Autor> GetQuery()
+    private IQueryable<Proovedor> GetQuery()
     {
-        return from autor in _context.Autor select autor;
+        return from Proovedor in _context.Proovedor select Proovedor;
     }
 }

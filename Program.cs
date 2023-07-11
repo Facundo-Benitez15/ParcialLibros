@@ -16,6 +16,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<ILibroService, LibroService>();
 builder.Services.AddScoped<IAutorService, AutorService>();
+builder.Services.AddScoped<IProovedorService, ProovedorService>();
 
 var app = builder.Build();
 
