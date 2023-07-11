@@ -60,7 +60,6 @@ namespace ParcialLibros.Controllers
         //GET: Libro/Create
         public IActionResult Create()
         {
-            //Utilizar algo parecido para el mostrar en el listado,pero con nombres en lugar de id
             ViewData["AutorId"] = new SelectList(_context.Autor, "Id", "Id");
             ViewData["Proovedores"] = new SelectList(_context.Proovedor, "Id", "Nombre");
             return View();
