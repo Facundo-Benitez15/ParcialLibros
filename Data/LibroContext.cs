@@ -15,7 +15,8 @@ namespace ParcialLibros.Data
 
         public DbSet<ParcialLibros.Models.Libro> Libro { get; set; } = default!;
 
-        // public DbSet<ParcialLibros.Models.Autor> Autor { get; set; } = default!;
+        public DbSet<ParcialLibros.Models.Venta> Venta { get; set; } = default!;
+        public DbSet<ParcialLibros.Models.Proovedor> Proovedor { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,10 +28,6 @@ namespace ParcialLibros.Data
 
             base.OnModelCreating(modelBuilder);
         } 
-
-        // public DbSet<ParcialLibros.Models.Autor> Autor { get; set; } = default!;
-
-        public DbSet<ParcialLibros.Models.Proovedor> Proovedor { get; set; } = default!;
 
     }
 }

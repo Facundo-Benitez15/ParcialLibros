@@ -8,7 +8,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Ingresar un nuevo Comic al Sistema</h1>
+<h1>Comics</h1>
 
 <p>
 
@@ -19,8 +19,9 @@
         <div class="col-6 form-group m-2">
             <input placeholder="Nombre o Editorial" class="form-control" asp-for="NameFilter">
         </div>
-        <button class="btn btn-info" type="sumbit">Buscar</button>
-        
+        <button class="btn btn-warning" type="sumbit">Buscar</button>
+        <a asp-action="Index" class="btn btn-primary">Recargar</a>
+
     </form>
 </div>
 <table class="table m-3">
