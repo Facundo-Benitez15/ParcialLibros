@@ -17,13 +17,17 @@ namespace ParcialLibros.Controllers
     public class LibroController : Controller
     {
         private readonly ILibroService _libroService;
+        private readonly IAutorService _autorService;
+        private readonly IProovedorService _proovedorService;
 
         private readonly LibroContext _context;
 
-        public LibroController(ILibroService libroService,LibroContext context)
+        public LibroController(ILibroService libroService, IAutorService autorService, IProovedorService proovedorService, LibroContext context)
         {
             _libroService = libroService;
-            _context=context;
+            _context = context;
+            _autorService = autorService;
+            _proovedorService = proovedorService;
         }
 
         // GET: Libro
@@ -31,6 +35,8 @@ namespace ParcialLibros.Controllers
         {
             var model = new LibrosViewModel();
             model.Libros = _libroService.GetAll(NameFilter);
+            model.Autors = _autorService.GetAll();
+            model.Proovedors = _proovedorService.GetAll();
             return View(model);
         }
 
